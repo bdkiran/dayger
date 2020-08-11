@@ -56,12 +56,17 @@ func home(w http.ResponseWriter, r *http.Request) {
 //Authentication middleware function
 func authMiddleWare(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		//If any more are needed, will keep a list of routes that dont need to be authenticated
-		if r.RequestURI == "/login" {
-			h.ServeHTTP(w, r)
-			return
+
+		urlListToNotCheck := []string{"/login", "/refresh", "/bootstrap"}
+		for _, uri := range urlListToNotCheck {
+			if r.RequestURI == uri {
+				h.ServeHTTP(w, r)
+				return
+			}
 		}
+
 		//Checks to see if a valid jwt token is present, if not will send a response back to client
+		//and return a bool if request was successfully authroized
 		isAuthenticated := validateToken(w, r)
 		//Once passed, request is sent along to our route function
 		if isAuthenticated {

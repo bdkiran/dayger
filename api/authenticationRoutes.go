@@ -151,7 +151,7 @@ func refreshToken(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if err == jwt.ErrSignatureInvalid {
 			authResponse = authenticationData{
-				Token: "Unauthroized Request",
+				Token: "Unauthorized Request",
 			}
 			//return 403
 			unauthorizedResponse(w, authResponse)
@@ -245,8 +245,6 @@ func bootstrapFromToken(w http.ResponseWriter, r *http.Request) {
 		unauthorizedResponse(w, authResponse)
 		return
 	}
-
-	//Should we attempt to refresh to token if its too old??
 
 	//When we bootstrap we want to send the username and id to reduce api calls
 	usr, _ := obtainUserFromSlice(claim.ID)
