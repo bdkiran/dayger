@@ -32,6 +32,9 @@ func NewRouter() http.Handler {
 	//router.PathPrefix(songsDir).Handler(http.StripPrefix(songsDir, http.FileServer(http.Dir("."+songsDir))))
 	router.PathPrefix(songsDir).Handler(songFileHandler(songsDir))
 
+	picutreDir := "/images/"
+	router.PathPrefix(picutreDir).Handler(songFileHandler(picutreDir))
+
 	router.Use(authMiddleWare)
 
 	headersOk := handlers.AllowedHeaders([]string{"Accept", "Accept-Language", "X-Requested-With", "Content-Type", "Authorization"})

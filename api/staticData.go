@@ -55,11 +55,12 @@ type experience struct {
 	Location    string `json:"location,omitempty"`
 	Description string `json:"description,omitempty"`
 	UserID      string `json:"userID,omitempty"`
+	PictureURL  string `json:"pictureUrl,omitempty"`
 }
 
 var testExperiences = []experience{
-	experience{"Awsome Throwdown", "0", "07-07-2020", "Holywood", "Awsome party bring chicks", "1"},
-	experience{"Brunch and MOMOS", "1", "07-07-2020", "NYC", "Costume themed, dress up like wild, wild west", "0"},
+	experience{"Awsome Throwdown", "0", "07-07-2020", "Holywood", "Awsome party bring chicks", "1", "house.jpg"},
+	experience{"Brunch and MOMOS", "1", "07-07-2020", "NYC", "Costume themed, dress up like wild, wild west", "0", "party.jpeg"},
 }
 
 func obtainExperienceFromSliceByID(id string) (experience, error) {
@@ -70,7 +71,7 @@ func obtainExperienceFromSliceByID(id string) (experience, error) {
 		}
 	}
 	errorMessage := fmt.Sprintf("Unable to find an experience with the id: %s", id)
-	returnExperience := experience{"", errorMessage, "", "", "", ""}
+	returnExperience := experience{"", errorMessage, "", "", "", "", ""}
 	return returnExperience, errors.New(errorMessage)
 }
 
@@ -109,7 +110,7 @@ func removeExperienceFromSliceByID(id string) (experience, error) {
 	}
 	//Not sure if this message should fall under this catagory
 	errorMessage := fmt.Sprintf("Unable to find an experience with the id: %s", id)
-	exp = experience{"", errorMessage, "", "", "", ""}
+	exp = experience{"", errorMessage, "", "", "", "", ""}
 	return exp, errors.New(errorMessage)
 }
 
@@ -123,6 +124,6 @@ func updateExperienceInSlice(ex experience) (experience, error) {
 	}
 	//Not sure if this message should fall under this catagory
 	errorMessage := fmt.Sprintf("Unable to find an experience with the id: %s", ex.ID)
-	returnExperience := experience{"", errorMessage, "", "", "", ""}
+	returnExperience := experience{"", errorMessage, "", "", "", "", ""}
 	return returnExperience, errors.New(errorMessage)
 }
