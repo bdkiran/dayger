@@ -127,3 +127,15 @@ func updateExperienceInSlice(ex experience) (experience, error) {
 	returnExperience := experience{"", errorMessage, "", "", "", "", ""}
 	return returnExperience, errors.New(errorMessage)
 }
+
+func updateExperienceImageInSlice(id string, imageName string) error {
+	log.Printf("Attempting to update image for experience: %s", id)
+	for i, ev := range testExperiences {
+		if ev.ID == id {
+			testExperiences[i].PictureURL = imageName
+			return nil
+		}
+	}
+	errorResponse := fmt.Sprintf("No experience with the id: %s", id)
+	return errors.New(errorResponse)
+}

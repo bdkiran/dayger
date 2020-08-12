@@ -83,6 +83,10 @@ func sendFailResponse(w http.ResponseWriter, data interface{}) {
 }
 
 //Add internal server error response....
+func sendErrorResponse(w http.ResponseWriter, data interface{}) {
+	errorBytes, _ := json.Marshal(newErrorResponseBody("Error marshaling response", 0, nil))
+	writeResponse(w, errorBytes, http.StatusInternalServerError)
+}
 
 func writeResponse(w http.ResponseWriter, payloadData []byte, statusCode int) {
 	w.Header().Set("Content-type", "application/json; charset=utf-8")
