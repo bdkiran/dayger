@@ -24,16 +24,15 @@ func NewRouter() http.Handler {
 	router.HandleFunc("/refresh", refreshToken).Methods("GET")
 	router.HandleFunc("/bootstrap", bootstrapFromToken).Methods("GET")
 
-	//Generate inviteID
-	//Verify inviteID
+	router.HandleFunc("/imageUpload", imageUpload).Methods("POST")
 
-	//Code for audio streaming
+	//Serve hls files, should rename to refelect that
 	songsDir := "/songs/"
-	//router.PathPrefix(songsDir).Handler(http.StripPrefix(songsDir, http.FileServer(http.Dir("."+songsDir))))
-	router.PathPrefix(songsDir).Handler(songFileHandler(songsDir))
+	router.PathPrefix(songsDir).Handler(mediaFileHandler(songsDir))
 
+	//Serve images
 	picutreDir := "/images/"
-	router.PathPrefix(picutreDir).Handler(songFileHandler(picutreDir))
+	router.PathPrefix(picutreDir).Handler(mediaFileHandler(picutreDir))
 
 	router.Use(authMiddleWare)
 
@@ -44,7 +43,7 @@ func NewRouter() http.Handler {
 	return returnCors
 }
 
-func songFileHandler(directory string) http.Handler {
+func mediaFileHandler(directory string) http.Handler {
 	return http.StripPrefix(directory, http.FileServer(http.Dir("."+directory)))
 }
 
@@ -60,7 +59,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 func authMiddleWare(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		urlListToNotCheck := []string{"/login", "/refresh", "/bootstrap"}
+		urlListToNotCheck := []string{"/login", "/refresh", "/bootstrap", "/imageUpload"}
 		for _, uri := range urlListToNotCheck {
 			if r.RequestURI == uri {
 				h.ServeHTTP(w, r)
